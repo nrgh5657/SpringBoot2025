@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class ArticleForm {
+    public Article toEntity;
     private Long id;
     private String title;
     private String content;

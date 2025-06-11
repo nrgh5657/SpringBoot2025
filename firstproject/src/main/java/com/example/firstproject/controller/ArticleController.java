@@ -72,33 +72,58 @@ public class ArticleController {
         return "articles/index";
     }
 
+    //articles/{{article.id}}/edit
+    //localhost:8080/articles/2/edit  -> 이렇게 요청하면 edit()메소드가 응답
     @GetMapping("/{id}/edit")
-    public String updateArticles(@PathVariable("id") Long id, Model model) {
+    public String edit(@PathVariable("id")Long id, Model model) {
+
+        //1. 수정할 데이타 가져오기
         Article articleEntity = articleRepository.findById(id).orElse(null);
+
+        //2. 모델에 데이터 등록하기
         model.addAttribute("article", articleEntity);
+
+        //3. 뷰 페이지 설정하기
         return "articles/edit";
     }
-    @PostMapping("/{id}/edit")
-    public String updateArticles(@PathVariable("id") Long id, ArticleForm form) {
-        Article articleEntity = articleRepository.findById(id).orElse(null);
-        if (articleEntity != null) {
-            articleEntity.setTitle(form.getTitle());
-            articleEntity.setContent(form.getContent());
+
+    @PostMapping("/update")
+    public String updateArticle(ArticleForm form) {
+
+        log.info("Update article : {}",form);
+
+        //1. DTO를 엔티티로 변환하기
+        Article articleEntity = form.toEntity();
+
+        //2. 엔티티를 DB에 저장하기
+        Article target = articleRepository.findById(articleEntity.getId()).orElse(null);
+
+        if(target != null) {
             articleRepository.save(articleEntity);
         }
-        return "redirect:/articles/" + id;
+
+        //3. 수정 결과 페이지로 리다이렉트하기
+
+        return "redirect:/articles/" + articleEntity.getId();
     }
 
-
+    //localhost:8080/articles/1/delete
     @GetMapping("/{id}/delete")
-    public String delete(@PathVariable("id") Long id, RedirectAttributes rttr) {
-        Article targetArticle = articleRepository.findById(id).orElse(null);
-        if(targetArticle != null) {
-            articleRepository.delete(targetArticle);
-            rttr.addFlashAttribute("msg","삭제되었습니다");
+    public String delete(@PathVariable("id")Long id, RedirectAttributes redirectAttributes) {
+
+        //1. 삭제할 데이타 가져오기
+        Article target = articleRepository.findById(id).orElse(null);
+
+        //2. 대상 엔티티 삭제하기
+        if(target != null) {
+            articleRepository.delete(target);
+            redirectAttributes.addFlashAttribute("msg", "삭제됐습니다!");
         }
+
+        //3. 결과 페이지로 리다이렉트하기
         return "redirect:/articles";
     }
+
 }
 
 

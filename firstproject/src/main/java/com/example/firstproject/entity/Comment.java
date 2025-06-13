@@ -40,4 +40,17 @@ public class Comment {
     //2. 엔티티 생성 및 반환
         return new Comment(dto.getId(), dto.getNickname(), dto.getBody(), article);
     }
+
+    public void patch(CommentDto dto) {
+        //1. 예외발생
+        if(this.id != dto.getId()){
+            throw new IllegalArgumentException("댓글 수정 실패!, 잘못된 id가 입력되었습니다.");
+        }
+        if(dto.getNickname() != null){//수정할 nickname이 있니?
+             this.nickName = dto.getNickname();
+        }
+        if(dto.getBody() != null){//수정한 body(내용)가 있니
+            this.body = dto.getBody();
+        }
+   }
 }

@@ -1,5 +1,6 @@
 package com.example.firstproject.repository;
 
+import com.example.firstproject.dto.CommentDto;
 import com.example.firstproject.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +15,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     //2. 특정 닉네임 모든 댓글 조회
     List<Comment> findByNickName(String nickName);
+
 }

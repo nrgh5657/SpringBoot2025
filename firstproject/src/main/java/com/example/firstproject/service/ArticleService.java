@@ -1,4 +1,4 @@
-package com.example.firstproject;
+package com.example.firstproject.service;
 
 import com.example.firstproject.dto.ArticleForm;
 import com.example.firstproject.entity.Article;
@@ -6,12 +6,9 @@ import com.example.firstproject.repository.ArticleRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

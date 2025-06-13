@@ -1,6 +1,7 @@
 package com.example.firstproject;
 
 import com.example.firstproject.entity.Article;
+import com.example.firstproject.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -22,8 +22,9 @@ public class Comment {
 
     private String body;
 
-    @ManyToOne //(fecth = FetchType.Lazy)
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name="article_id")
+    @ToString.Exclude
     private Article article;
 
 
@@ -50,7 +51,7 @@ public class Comment {
              this.nickName = dto.getNickname();
         }
         if(dto.getBody() != null){//수정한 body(내용)가 있니
-            this.body = dto.getBody();
+            this.body = dto.getBody()   ;
         }
    }
 }

@@ -1,8 +1,10 @@
 package com.example.firstproject.controller;
 
 import com.example.firstproject.dto.ArticleForm;
+import com.example.firstproject.dto.CommentDto;
 import com.example.firstproject.entity.Article;
 import com.example.firstproject.repository.ArticleRepository;
+import com.example.firstproject.service.CommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,8 @@ public class ArticleController {
 
     @Autowired
     private ArticleRepository articleRepository;
+    @Autowired
+    private CommentService commentService;
 
     @GetMapping("/new")
     public String newArticle() {
@@ -44,19 +48,24 @@ public class ArticleController {
         return "redirect:/articles/" + saved.getId();
     }
 
+    // 단건조회 : CRUD에 R
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
-        log.info("Show article");
+        log.info("Show article {}", id);
 
-        //1. {id}값을 DB에서 꺼내오기
-        Article articleEntity = articleRepository.findById(id).orElse(null);
+        // 1. {id}값을 DB에서 꺼내오기
+        //  Optional<Article> article = articleRepository.findById(id); // 아이디 조회(조회 시 데이터가 없을 경우 null 반환, 아이디 있을 경우 엔티티 반환)
+        Article articleEntity = articleRepository.findById(id).orElse(null); // 위에 주석처리한 코드와 같은 코드
+        List<CommentDto> commentDtos = commentService.comments(id); // 서비스에서 comments(id) 메서드를 호출해 조회한 댓글 목록을 commentDtos 변수에 저장
 
-        //2 Entity -> DTO 변환 ->생략
+        log.info("Article : {}", articleEntity);
 
-        //3 view 전달
+        // 2. Entity -> DTO 반환
+        // 생략
+
+        // 3. View 전달
         model.addAttribute("article", articleEntity);
-
-
+        model.addAttribute("commentDtos", commentDtos); // 댓글 목록 모델에 등록
         return "articles/show";
     }
 
